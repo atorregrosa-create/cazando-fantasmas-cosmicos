@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Una expedición interactiva para descubrir los neutrinos y la astronomía de partículas.">
+<title>Cazando fantasmas cósmicos — Una partícula invisible</title>
+<style>
+:root{
+ --ink:#e8f0fb;--muted:#a9bad0;--paper:#080f1b;--white:#101c2d;
+ --navy:#050b14;--navy2:#10233b;--cyan:#75cfff;--orange:#75cfff;
+ --line:#263a55;--serif:Georgia,"Times New Roman",serif;
+ --sans:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.65}
+a{color:inherit}button,input{font:inherit}.wrap{width:min(1120px,calc(100% - 42px));margin:auto}
+.topbar{height:68px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #ffffff25;color:#f8f6ef;position:absolute;z-index:5;top:0;left:0;width:100%;padding:0 max(22px,calc((100vw - 1120px)/2))}
+.brand{font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:750}.nav{display:flex;gap:22px;font-size:12px}.nav a{text-decoration:none;color:#e6edefa8}.nav a:hover{color:white}
+.hero{min-height:690px;background:radial-gradient(ellipse at 73% 48%,#235467 0,#142f3d 34%,#0d202b 72%);color:#f8f6ef;position:relative;overflow:hidden;display:flex;align-items:center;padding:125px 0 85px}
+.hero:before{content:"";position:absolute;width:600px;height:600px;border:1px solid #83dce52c;border-radius:50%;right:7%;top:9%;box-shadow:0 0 0 45px #83dce509,0 0 0 110px #83dce506}
+.hero:after{content:"";position:absolute;right:12%;top:24%;width:440px;height:440px;border:1px solid #83dce52b;border-radius:50%;transform:scaleY(.35) rotate(-27deg)}
+.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:50px;align-items:center;position:relative;z-index:1}
+.kicker{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--cyan);font-weight:750}
+h1,h2,h3,p{margin-top:0}h1{font:clamp(48px,7vw,86px)/.98 var(--serif);letter-spacing:-.045em;max-width:680px;margin:20px 0 25px}
+.hero p{font-size:17px;color:#d3dfe0;max-width:530px}.hero-note{font-size:11px!important;letter-spacing:.08em;text-transform:uppercase;color:#a8c4c9!important;margin-top:30px}
+.orbit{height:370px;position:relative;display:grid;place-items:center}.orbit svg{width:100%;max-width:440px;overflow:visible}.orbit .pulse{animation:pulse 3s ease-in-out infinite;transform-origin:center}.orbit .travel{stroke-dasharray:7 13;animation:dash 16s linear infinite}
+@keyframes pulse{50%{opacity:.45;transform:scale(1.08)}}@keyframes dash{to{stroke-dashoffset:-400}}
+.section{padding:95px 0}.section.dark{background:var(--navy);color:#f6f4ed}.section.white{background:var(--white)}
+.section-head{display:grid;grid-template-columns:.55fr 1.45fr;gap:50px;margin-bottom:48px}.num{font-size:12px;letter-spacing:.15em;color:var(--orange);font-weight:800}.section h2{font:clamp(35px,5vw,58px)/1.06 var(--serif);letter-spacing:-.035em;margin-bottom:18px}.lead{font:20px/1.55 var(--serif);color:var(--muted);max-width:760px}.dark .lead{color:#bfd0d3}
+.prose{max-width:740px;color:var(--muted)}.dark .prose{color:#c0d0d2}.prose p{margin-bottom:18px}
+.fact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:40px}.fact{background:var(--white);padding:27px}.fact b{display:block;font:34px var(--serif);color:var(--navy);margin-bottom:8px}.fact span{font-size:13px;color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}.diagram{background:#e9eeea;padding:28px;border:1px solid var(--line);border-radius:3px}.diagram svg{width:100%;height:auto;display:block}
+.callout{border-left:3px solid var(--orange);padding:5px 0 5px 20px;margin:30px 0;font:21px/1.45 var(--serif)}
+.simulator{background:#f0f4f1;border:1px solid #d4ded9;padding:28px;color:var(--ink);border-radius:3px}
+.simulator h3{font:26px var(--serif);margin-bottom:8px}.small{font-size:12px;color:var(--muted)}
+.controls{display:flex;gap:20px;align-items:center;flex-wrap:wrap;margin:22px 0}.controls label{font-size:13px;font-weight:650}.controls select,.controls input{margin-left:8px}
+.controls input[type=range]{accent-color:#167b8b;width:min(260px,60vw)}
+.prob-bars{display:grid;gap:13px;margin-top:20px}.barline{display:grid;grid-template-columns:100px 1fr 48px;gap:10px;align-items:center;font-size:12px}.track{height:10px;background:#d8e2df;border-radius:10px;overflow:hidden}.fill{height:100%;width:0;background:#16879a;transition:width .35s ease;border-radius:10px}.barline:nth-child(2) .fill{background:#75cfff}.barline:nth-child(3) .fill{background:#4c718b}
+.source-note{font-size:11px;color:#6c7778;margin-top:18px}
+.timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:40px;border-top:1px solid #54707a}
+.time{padding:22px 22px 0 0;position:relative}.time:before{content:"";position:absolute;top:-5px;left:0;width:9px;height:9px;border-radius:50%;background:var(--cyan)}.time strong{display:block;color:var(--cyan);font:24px var(--serif);margin-bottom:7px}.time p{font-size:13px;color:#c2d0d2}
+.icecube{background:linear-gradient(135deg,#e9efeb,#d9e4e2);color:var(--ink);padding:30px;border:1px solid #cdd9d6}
+.icecube svg{width:100%;max-height:330px}.detector-labels{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-top:20px}.detector-labels div{border-top:2px solid var(--cyan);padding-top:10px;font-size:13px}
+.quiz{max-width:760px;background:var(--white);border:1px solid var(--line);padding:30px}.quiz h3{font:26px var(--serif)}.answers{display:grid;gap:9px;margin:18px 0}.answers button{text-align:left;background:#f2f4f0;border:1px solid #d8dfda;padding:12px 15px;cursor:pointer;border-radius:2px}.answers button:hover{border-color:#16879a}.answers button.selected{background:#dff0ef;border-color:#16879a}.feedback{min-height:25px;font-size:13px;font-weight:650}
+.footer{background:#0c1d27;color:#b7c7c9;padding:45px 0;font-size:12px}.footer strong{color:#fff}.footer-grid{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap}
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}.reveal.visible{opacity:1;transform:none}
+@media(max-width:760px){.nav{display:none}.hero{min-height:0;padding:125px 0 65px}.hero-grid,.section-head,.two{grid-template-columns:1fr;gap:25px}.orbit{height:230px;order:-1}.section{padding:68px 0}.fact-grid{grid-template-columns:1fr}.timeline{grid-template-columns:1fr 1fr;row-gap:25px}.detector-labels{grid-template-columns:1fr}.wrap{width:min(100% - 32px,1120px)}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+
+/* Identidad visual nocturna: azul profundo, negro y acentos glaciales */
+body{background:#080f1b;color:#e8f0fb}
+.topbar{position:fixed;background:rgba(5,11,20,.88);backdrop-filter:blur(14px);border-bottom:1px solid #29415e}
+.nav a{color:#b8cbe0}.nav a:hover,.nav a.active{color:#75cfff}
+.hero{background:radial-gradient(ellipse at 73% 48%,#173d60 0,#0b1b30 38%,#050a13 78%)}
+.section.white{background:#0b1422;color:#e8f0fb}.section:not(.dark){background:#0b1422}
+.section.dark{background:#050b14;color:#e8f0fb}
+.lead,.prose{color:#afc0d5}.dark .lead,.dark .prose{color:#b8c9dd}
+.fact-grid{background:#263a55;border-color:#263a55}.fact{background:#101c2d}.fact b{color:#8bcfff}.fact span{color:#b5c5d8}
+.diagram{background:#12243a;border-color:#29415e}.callout{border-color:#75cfff;color:#e1edf9}
+.simulator{background:#101e31;border-color:#29415e;color:#e8f0fb}.simulator .small,.source-note{color:#9fb2ca}
+.controls input[type=range]{accent-color:#75cfff}.track{background:#263a55}.fill{background:#75cfff}.barline:nth-child(2) .fill{background:#9abfff}.barline:nth-child(3) .fill{background:#5e9fce}
+.icecube{background:linear-gradient(135deg,#12243a,#1b3551);color:#e8f0fb;border-color:#35516e}.icecube svg text{fill:#d6e8f8!important}
+.quiz{background:#101c2d;border-color:#29415e}.answers button{background:#172941;border-color:#304968;color:#e6f0fb}.answers button:hover{border-color:#75cfff}.answers button.selected{background:#173c59;border-color:#75cfff}.feedback{color:#c8e7ff}
+.footer{background:#03070d;color:#a9bed4}.footer strong{color:#fff}.footer-authors{color:#75cfff}
+.authors{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:27px 0 0!important;font-size:13px!important;color:#c5d9ec!important}.authors span{width:100%;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#83a7c7}.authors strong{font-weight:650;color:#f3f8ff}.authors i{font-style:normal;color:#75cfff}
+.hero-cta{display:inline-flex;gap:18px;align-items:center;margin-top:20px;padding:12px 17px;border:1px solid #75cfff;color:#eaf7ff;text-decoration:none;font-size:13px;transition:.2s}.hero-cta:hover{background:#173c59}.hero-cta span{font-size:18px;color:#75cfff}
+.flavor-explorer{margin:25px 0;padding:18px;border:1px solid #29415e;background:#0d1a2b}.flavor-explorer .small{margin-bottom:10px}.flavor-buttons,.step-buttons{display:flex;gap:8px;flex-wrap:wrap}.flavor-chip,.step{border:1px solid #36516f;background:#13263d;color:#d9e9f8;padding:9px 12px;cursor:pointer;font-size:12px}.flavor-chip.active,.step.active{background:#1c4a6b;border-color:#75cfff;color:white}.flavor-info{margin:13px 0 0;color:#c5d8ec;font-size:13px}
+.detector-explorer{margin-top:28px;padding:24px;background:#0b1727;border:1px solid #29415e}.explorer-heading{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px}.step-detail{margin-top:17px;padding:17px;background:#12243a;border-left:2px solid #75cfff}.step-detail strong{font:21px Georgia,serif;color:#f1f7ff}.step-detail p{margin:7px 0 0;color:#c1d2e5;font-size:13px}
+.nav-progress{position:fixed;top:67px;left:0;height:2px;background:#75cfff;width:0;z-index:9;transition:width .1s linear}
+@media(max-width:760px){.topbar{height:58px}.brand{font-size:10px}.nav{display:flex;overflow-x:auto;max-width:58vw;gap:14px}.nav a{white-space:nowrap;font-size:10px}.nav-progress{top:57px}.authors{gap:7px}.hero-cta{margin-top:14px}.step-buttons{display:grid;grid-template-columns:1fr}.step{width:100%;text-align:left}}
+
+</style>
+</head>
+<body>
+<div class="nav-progress" id="navProgress"></div>
+<header class="topbar">
+ <div class="brand">Cuaderno de exploración · Física de partículas</div>
+ <nav class="nav"><a href="#particula">La partícula</a><a href="#oscilacion">Oscilaciones</a><a href="#icecube">IceCube</a><a href="#quiz">Explora</a><a href="#futuro">El futuro</a><a href="#referencias">Fuentes</a></nav>
+</header>
+<main>
+<section class="hero">
+ <div class="wrap hero-grid">
+  <div>
+   <div class="kicker">Una expedición al universo invisible</div>
+   <h1>Cazando<br>fantasmas<br>cósmicos.</h1>
+   <p>Hay partículas que atraviesan océanos, montañas y nuestros propios cuerpos sin dejar casi rastro. Se llaman neutrinos. Seguir sus huellas nos permite escuchar fenómenos que la luz no siempre puede contar.</p>
+   <p class="hero-note">Partículas · Astrofísica · Cosmología</p>
+   <p class="authors"><span>Una exploración de</span><strong>Aura Torregrosa Vanegas</strong><i>y</i><strong>David Vargas Forero</strong></p>
+   <a class="hero-cta" href="#particula">Comenzar la exploración <span>↓</span></a>
+  </div>
+  <div class="orbit" aria-label="Ilustración conceptual de una partícula y su trayectoria">
+   <svg viewBox="0 0 440 360" role="img">
+    <defs><radialGradient id="g"><stop stop-color="#d5ffff" stop-opacity=".95"/><stop offset=".3" stop-color="#62d4df" stop-opacity=".7"/><stop offset="1" stop-color="#62d4df" stop-opacity="0"/></radialGradient></defs>
+    <ellipse cx="220" cy="180" rx="180" ry="70" fill="none" stroke="#72cbd3" stroke-opacity=".35" transform="rotate(-25 220 180)"/>
+    <ellipse cx="220" cy="180" rx="145" ry="112" fill="none" stroke="#72cbd3" stroke-opacity=".22" transform="rotate(35 220 180)"/>
+    <path class="travel" d="M18 272 Q120 45 230 180 T420 65" fill="none" stroke="#8ce8ed" stroke-width="2"/>
+    <circle cx="220" cy="180" r="67" fill="url(#g)" class="pulse"/>
+    <circle cx="220" cy="180" r="12" fill="#efffff"/>
+    <circle cx="18" cy="272" r="4" fill="#75cfff"/><circle cx="420" cy="65" r="4" fill="#75cfff"/>
+    <g fill="#d6e9e9" font-family="sans-serif" font-size="10"><text x="8" y="293">origen</text><text x="365" y="48">trayectoria</text></g>
+   </svg>
+  </div>
+ </div>
+</section>
+
+<section class="section white" id="particula">
+ <div class="wrap">
+  <div class="section-head reveal"><div class="num">01 / LA PARTÍCULA</div><div><h2>Pequeña, abundante y extraordinariamente esquiva.</h2><p class="lead">El neutrino es una partícula elemental eléctricamente neutra. Interactúa principalmente mediante la fuerza débil y la gravedad; por eso, detectarlo es un desafío experimental.</p></div></div>
+  <div class="two reveal">
+   <div class="prose">
+    <p>Los neutrinos pertenecen a la familia de los leptones, junto con el electrón y sus parientes más pesados. Se conocen tres sabores: electrónico, muónico y tauónico. Cada uno está asociado a su correspondiente leptón cargado.</p>
+    <p>Su neutralidad eléctrica y su baja probabilidad de interacción con la materia hacen que puedan recorrer distancias enormes sin ser absorbidos. Esa misma propiedad que los vuelve difíciles de capturar los convierte en mensajeros cósmicos valiosos.</p>
+    <div class="flavor-explorer"><p class="small">Toca un sabor para conocerlo:</p><div class="flavor-buttons"><button class="flavor-chip active" data-flavor="e">νe · Electrónico</button><button class="flavor-chip" data-flavor="m">νμ · Muónico</button><button class="flavor-chip" data-flavor="t">ντ · Tauónico</button></div><p class="flavor-info" id="flavorInfo" aria-live="polite">Se relaciona con el electrón, el leptón cargado más ligero.</p></div>
+    <div class="callout">No vemos directamente al neutrino: buscamos las señales diminutas que deja cuando, muy ocasionalmente, interactúa.</div>
+   </div>
+   <div class="diagram">
+    <svg viewBox="0 0 480 300" role="img" aria-label="Tres sabores de neutrino">
+     <g font-family="sans-serif" text-anchor="middle">
+      <circle cx="80" cy="110" r="42" fill="#d8eff0" stroke="#16879a" stroke-width="2"/><circle cx="240" cy="110" r="42" fill="#f5e2d7" stroke="#75cfff" stroke-width="2"/><circle cx="400" cy="110" r="42" fill="#dce7ef" stroke="#4c718b" stroke-width="2"/>
+      <g font-size="25" font-weight="700" fill="#17313a"><text x="80" y="119">νe</text><text x="240" y="119">νμ</text><text x="400" y="119">ντ</text></g>
+      <g font-size="13" fill="#33464d"><text x="80" y="185">Electrónico</text><text x="240" y="185">Muónico</text><text x="400" y="185">Tauónico</text></g>
+      <g font-size="11" fill="#66757a"><text x="80" y="208">asociado al electrón</text><text x="240" y="208">asociado al muón</text><text x="400" y="208">asociado al tau</text></g>
+     </g>
+     <path d="M125 110 H195 M285 110 H355" stroke="#87999a" stroke-dasharray="3 5" fill="none"/>
+     <text x="240" y="270" font-size="12" text-anchor="middle" fill="#65757a">Tres sabores reconocidos en el Modelo Estándar</text>
+    </svg>
+   </div>
+  </div>
+  <div class="fact-grid reveal">
+   <div class="fact"><b>0</b><span>Carga eléctrica neta.</span></div>
+   <div class="fact"><b>3</b><span>Sabores conocidos: electrónico, muónico y tauónico.</span></div>
+   <div class="fact"><b>Débil</b><span>Interacción que permite detectarlos, aunque con muy baja probabilidad.</span></div>
+  </div>
+ </div>
+</section>
+
+<section class="section" id="oscilacion">
+ <div class="wrap">
+  <div class="section-head reveal"><div class="num">02 / EL VIAJE</div><div><h2>Un neutrino puede cambiar de identidad.</h2><p class="lead">Las oscilaciones describen cómo un neutrino producido con un sabor puede detectarse después con otro. Este fenómeno conecta la física de partículas con la propagación a grandes distancias.</p></div></div>
+  <div class="two reveal">
+   <div class="prose">
+    <p>Los neutrinos se producen y detectan en estados de sabor, pero su propagación está relacionada con estados de masa. La mezcla entre ambos conjuntos permite que la composición de sabor cambie mientras la partícula viaja.</p>
+    <p>La observación de las oscilaciones mostró que los neutrinos tienen masa, aunque muy pequeña. Por eso, las oscilaciones fueron una pista decisiva de que el Modelo Estándar mínimo necesitaba ampliarse.</p>
+    <p class="small">El simulador de la derecha es una visualización didáctica: ilustra la idea de cambio de sabor, no calcula probabilidades experimentales ni sustituye un modelo de oscilación de tres sabores.</p>
+   </div>
+   <div class="simulator">
+    <h3>Un viaje entre sabores</h3>
+    <p class="small">Mueve el control para representar una mayor distancia de propagación.</p>
+    <div class="controls">
+     <label for="flavor">Neutrino inicial</label>
+     <select id="flavor"><option value="e">Electrónico (νe)</option><option value="m">Muónico (νμ)</option><option value="t">Tauónico (ντ)</option></select>
+    </div>
+    <div class="controls"><label for="distance">Distancia conceptual</label><input id="distance" type="range" min="0" max="100" value="0"><output id="distanceOut">0</output></div>
+    <div class="prob-bars">
+     <div class="barline"><span>Electrónico</span><div class="track"><div class="fill" id="barE"></div></div><b id="valE">100%</b></div>
+     <div class="barline"><span>Muónico</span><div class="track"><div class="fill" id="barM"></div></div><b id="valM">0%</b></div>
+     <div class="barline"><span>Tauónico</span><div class="track"><div class="fill" id="barT"></div></div><b id="valT">0%</b></div>
+    </div>
+    <p class="source-note" id="simNote">Al inicio, el estado se representa con el sabor seleccionado.</p>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section class="section dark">
+ <div class="wrap">
+  <div class="section-head reveal"><div class="num">03 / LA PISTA SOLAR</div><div><h2>Cuando el Sol parecía perder neutrinos.</h2><p class="lead">Durante décadas, los experimentos detectaron menos neutrinos electrónicos solares de los que predecían los modelos solares y las primeras interpretaciones.</p></div></div>
+  <div class="two reveal">
+   <div class="prose">
+    <p>El Sol produce neutrinos en las reacciones nucleares de su interior. Como atraviesan la materia con tanta facilidad, llegan hasta la Tierra y ofrecen una ventana directa a los procesos que ocurren en el núcleo solar.</p>
+    <p>El déficit observado no significaba necesariamente que el Sol estuviera produciendo menos neutrinos. La explicación llegó al comprender que algunos neutrinos electrónicos podían transformarse en otros sabores durante su recorrido.</p>
+    <div class="callout">La pregunta cambió: no solo importaba cuántos neutrinos llegaban, sino también qué sabor tenían al ser detectados.</div>
+   </div>
+   <div class="diagram" style="background:#173744;border-color:#365563">
+    <svg viewBox="0 0 480 260" role="img" aria-label="Esquema conceptual de neutrinos solares y detección">
+     <circle cx="75" cy="125" r="48" fill="#83baff"/><circle cx="75" cy="125" r="62" fill="none" stroke="#83baff" stroke-opacity=".3" stroke-width="12"/>
+     <path d="M140 110 Q240 35 330 110" stroke="#8be1e5" stroke-width="2" stroke-dasharray="6 7" fill="none"/>
+     <path d="M140 140 Q240 215 330 140" stroke="#75cfff" stroke-width="2" stroke-dasharray="6 7" fill="none"/>
+     <rect x="342" y="75" width="105" height="105" rx="5" fill="#244e5b" stroke="#8be1e5"/>
+     <g fill="#e9f3ef" font-family="sans-serif" text-anchor="middle"><text x="75" y="205" font-size="12">Sol</text><text x="394" y="123" font-size="12">Detector</text><text x="394" y="141" font-size="10">en la Tierra</text><text x="240" y="245" font-size="10">Esquema conceptual · no está a escala</text></g>
+     <g fill="#8be1e5"><circle cx="190" cy="83" r="4"/><circle cx="237" cy="74" r="4"/><circle cx="285" cy="91" r="4"/></g>
+     <g fill="#9ccfff"><circle cx="190" cy="178" r="4"/><circle cx="237" cy="187" r="4"/><circle cx="285" cy="169" r="4"/></g>
+    </svg>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section class="section white" id="icecube">
+ <div class="wrap">
+  <div class="section-head reveal"><div class="num">04 / LA CACERÍA</div><div><h2>Un telescopio construido con hielo.</h2><p class="lead">En la Antártida, el observatorio IceCube utiliza un kilómetro cúbico de hielo profundo como medio de detección. No observa la luz del neutrino: registra destellos producidos por partículas secundarias.</p></div></div>
+  <div class="two reveal">
+   <div class="prose">
+    <h3 style="font:28px var(--serif)">Del neutrino a la señal</h3>
+    <p>En ocasiones, un neutrino interactúa con un núcleo o una partícula del medio y produce partículas cargadas. Si estas viajan a través del hielo más rápido que la luz puede propagarse en ese medio, emiten luz Cherenkov: un tenue resplandor azul.</p>
+    <p>Una red de sensores ópticos distribuidos en el hielo registra esa luz. A partir del tiempo y la intensidad de las señales, los investigadores reconstruyen la trayectoria y estiman propiedades de la partícula que inició el evento.</p>
+   </div>
+   <div class="icecube">
+    <svg viewBox="0 0 460 330" role="img" aria-label="Esquema de sensores distribuidos en un volumen de hielo">
+     <defs><linearGradient id="ice" x2="1" y2="1"><stop stop-color="#b7d8d9"/><stop offset="1" stop-color="#dce9e5"/></linearGradient></defs>
+     <path d="M100 40 L340 40 L390 80 L390 270 L150 270 L100 230 Z" fill="url(#ice)" stroke="#6c9ca4" stroke-width="2"/>
+     <path d="M100 40 L150 80 L390 80 M150 80 V270" fill="none" stroke="#8bb6bb"/>
+     <g stroke="#4c718b" stroke-width="2">
+      <path d="M175 72 V250 M225 72 V250 M275 72 V250 M325 72 V250"/>
+     </g>
+     <g fill="#f9ffff" stroke="#16879a" stroke-width="2">
+      <circle cx="175" cy="105" r="6"/><circle cx="175" cy="150" r="6"/><circle cx="175" cy="195" r="6"/><circle cx="175" cy="238" r="6"/>
+      <circle cx="225" cy="105" r="6"/><circle cx="225" cy="150" r="6"/><circle cx="225" cy="195" r="6"/><circle cx="225" cy="238" r="6"/>
+      <circle cx="275" cy="105" r="6"/><circle cx="275" cy="150" r="6"/><circle cx="275" cy="195" r="6"/><circle cx="275" cy="238" r="6"/>
+      <circle cx="325" cy="105" r="6"/><circle cx="325" cy="150" r="6"/><circle cx="325" cy="195" r="6"/><circle cx="325" cy="238" r="6"/>
+     </g>
+     <path d="M70 285 L345 55" stroke="#75cfff" stroke-width="2" stroke-dasharray="5 6"/>
+     <text x="20" y="305" font-size="11" fill="#405b63">Trayectoria reconstruida</text>
+     <text x="245" y="22" font-size="11" fill="#405b63">Volumen de hielo</text>
+    </svg>
+   </div>
+  </div>
+  <div class="detector-labels reveal">
+   <div><strong>1. Interacción</strong><br>El neutrino produce partículas cargadas.</div>
+   <div><strong>2. Luz Cherenkov</strong><br>Las partículas generan un destello en el hielo.</div>
+   <div><strong>3. Reconstrucción</strong><br>Los sensores registran la señal para analizar el evento.</div>
+  </div>
+  <div class="detector-explorer reveal">
+   <div class="explorer-heading"><span class="num">EXPLORA EL PROCESO</span><span class="small">Selecciona cada etapa</span></div>
+   <div class="step-buttons" role="group" aria-label="Etapas de detección"><button class="step active" data-step="0">01 · Interacción</button><button class="step" data-step="1">02 · Destello</button><button class="step" data-step="2">03 · Registro</button></div>
+   <div class="step-detail" id="stepDetail" aria-live="polite"><strong>El encuentro improbable.</strong><p>Un neutrino atraviesa el hielo y, en raras ocasiones, interactúa con un núcleo o una partícula del medio. Esa interacción puede producir una partícula cargada.</p></div>
+  </div>
+ </div>
+</section>
+
+<section class="section dark">
+ <div class="wrap">
+  <div class="section-head reveal"><div class="num">05 / MENSAJEROS CÓSMICOS</div><div><h2>El universo también se puede escuchar.</h2><p class="lead">Los neutrinos astrofísicos pueden viajar desde entornos extremos y aportar información complementaria a la que ofrecen la luz y los rayos cósmicos.</p></div></div>
+  <div class="timeline reveal">
+   <div class="time"><strong>Sol</strong><p>Los procesos de fusión nuclear producen neutrinos que permiten estudiar el interior solar.</p></div>
+   <div class="time"><strong>Supernovas</strong><p>El colapso y la explosión de estrellas pueden liberar enormes cantidades de neutrinos.</p></div>
+   <div class="time"><strong>Blázares</strong><p>Entornos asociados a agujeros negros supermasivos pueden acelerar partículas y producir neutrinos de alta energía.</p></div>
+   <div class="time"><strong>Galaxias</strong><p>La búsqueda de neutrinos difusos ayuda a investigar poblaciones de fuentes y procesos energéticos.</p></div>
+  </div>
+ </div>
+</section>
+
+<section class="section white" id="quiz">
+ <div class="wrap">
+  <div class="section-head reveal"><div class="num">06 / COMPRUEBA LO QUE DESCUBRISTE</div><div><h2>¿Ya puedes reconocer la huella de un fantasma?</h2><p class="lead">Una pregunta rápida para poner a prueba lo aprendido.</p></div></div>
+  <div class="quiz reveal">
+   <div class="small" id="qCount">PREGUNTA 1 DE 3</div>
+   <h3 id="question">¿Por qué es tan difícil detectar un neutrino?</h3>
+   <div class="answers" id="answers"></div>
+   <div class="feedback" id="feedback" aria-live="polite"></div>
+   <button id="next" style="background:#173744;color:white;border:0;padding:11px 18px;cursor:pointer" disabled>Siguiente pregunta →</button>
+  </div>
+ </div>
+</section>
+
+<section class="section" id="futuro">
+ <div class="wrap">
+  <div class="section-head reveal"><div class="num">07 / LA PRÓXIMA GENERACIÓN</div><div><h2>La cacería apenas comienza.</h2><p class="lead">Los próximos experimentos no persiguen una sola respuesta: quieren medir mejor las oscilaciones, estudiar el orden de las masas de los neutrinos y ampliar nuestra visión de las fuentes cósmicas.</p></div></div>
+  <div class="fact-grid reveal">
+   <div class="fact"><b>IceCube-Gen2</b><span>Una ampliación del observatorio antártico, con un arreglo óptico mucho mayor y detección por radio para explorar energías aún más altas.</span></div>
+   <div class="fact"><b>DUNE</b><span>Enviará un haz de neutrinos a un detector subterráneo para estudiar oscilaciones, incluida la posible violación de CP en el sector leptónico.</span></div>
+   <div class="fact"><b>JUNO</b><span>Usa un gran detector de centelleador líquido y medidas precisas de neutrinos de reactor para investigar el orden de las masas.</span></div>
+  </div>
+  <p class="source-note">Precisión importante: el diseño de IceCube-Gen2 contempla un volumen óptico instrumentado mucho mayor que IceCube; no debe resumirse como si el detector completo fuera simplemente “de 8 km³”. La cifra depende de qué componente y volumen se describan.</p>
+  <div class="callout">Una pregunta abierta conecta estos experimentos: ¿qué nos dicen las masas y las oscilaciones de los neutrinos sobre las leyes fundamentales y la evolución del universo?</div>
+ </div>
+</section>
+
+<section class="section white" id="referencias">
+ <div class="wrap">
+  <div class="section-head reveal"><div class="num">08 / FUENTES Y LECTURAS</div><div><h2>La ciencia deja huellas en el papel.</h2><p class="lead">Las explicaciones de esta página se apoyan en artículos fundacionales, revisiones científicas y documentación de colaboraciones experimentales. Abre cada referencia para consultar la fuente original.</p></div></div>
+  <div class="prose reveal" style="max-width:900px">
+   <h3 style="font:25px Georgia,serif">Historia y propiedades fundamentales</h3>
+   <ol>
+    <li>Particle Data Group, P. A. Zyla et al. “Review of Particle Physics”. <i>Progress of Theoretical and Experimental Physics</i> 2020, 083C01 (2020), y actualizaciones posteriores. <a href="https://pdg.lbl.gov/" target="_blank" rel="noopener">PDG — versión actual</a>.</li>
+    <li>W. Pauli. Carta a los “Estimados Señores Radiactivos”, 4 de diciembre de 1930. Reproducida en <i>Writings on Physics and Philosophy</i>, Springer (1994), pp. 193–194. <a href="https://cds.cern.ch/" target="_blank" rel="noopener">Archivos CERN</a>.</li>
+    <li>C. L. Cowan Jr. et al. “Detection of the Free Neutrino: A Confirmation”. <i>Science</i> 124 (3212), 103–104 (1956). <a href="https://doi.org/10.1126/science.124.3212.103" target="_blank" rel="noopener">doi:10.1126/science.124.3212.103</a>.</li>
+    <li>G. Danby et al. “Observation of High-Energy Neutrino Reactions and the Existence of Two Kinds of Neutrinos”. <i>Physical Review Letters</i> 9, 36 (1962). <a href="https://doi.org/10.1103/PhysRevLett.9.36" target="_blank" rel="noopener">doi:10.1103/PhysRevLett.9.36</a>.</li>
+   </ol>
+   <h3 style="font:25px Georgia,serif">Mezcla, oscilaciones y neutrinos solares</h3>
+   <ol>
+    <li>Z. Maki, M. Nakagawa y S. Sakata. “Remarks on the Unified Model of Elementary Particles”. <i>Progress of Theoretical Physics</i> 28(5), 870–880 (1962). <a href="https://doi.org/10.1143/PTP.28.870" target="_blank" rel="noopener">doi:10.1143/PTP.28.870</a>.</li>
+    <li>B. Pontecorvo. “Neutrino Experiments and the Problem of Conservation of Leptonic Charge”. <i>Soviet Physics JETP</i> 26, 984 (1968) [original ruso: 1967]. <a href="https://www.jetp.ras.ru/" target="_blank" rel="noopener">Journal of Experimental and Theoretical Physics</a>.</li>
+    <li>Y. Fukuda et al. (Super-Kamiokande Collaboration). “Evidence for Oscillation of Atmospheric Neutrinos”. <i>Physical Review Letters</i> 81, 1562 (1998). <a href="https://doi.org/10.1103/PhysRevLett.81.1562" target="_blank" rel="noopener">doi:10.1103/PhysRevLett.81.1562</a>.</li>
+   </ol>
+   <h3 style="font:25px Georgia,serif">Astronomía de neutrinos e IceCube</h3>
+   <ol>
+    <li>F. Halzen y S. R. Klein. “Invited Review Article: IceCube: An instrument for neutrino astronomy”. <i>Review of Scientific Instruments</i> 81, 081101 (2010). <a href="https://doi.org/10.1063/1.3480478" target="_blank" rel="noopener">doi:10.1063/1.3480478</a>.</li>
+    <li>IceCube Collaboration, M. G. Aartsen et al. “Evidence for High-Energy Extraterrestrial Neutrinos at the IceCube Detector”. <i>Science</i> 342, 1242856 (2013). <a href="https://doi.org/10.1126/science.1242856" target="_blank" rel="noopener">doi:10.1126/science.1242856</a>.</li>
+    <li>IceCube Collaboration, M. G. Aartsen et al. “Neutrino emission from the direction of the blazar TXS 0506+056 prior to the IceCube-170922A alert”. <i>Science</i> 361, 147–151 (2018). <a href="https://doi.org/10.1126/science.aat2890" target="_blank" rel="noopener">doi:10.1126/science.aat2890</a>.</li>
+    <li>IceCube Collaboration, R. Abbasi et al. “Evidence for neutrino emission from the nearby active galaxy NGC 1068”. <i>Science</i> 378 (2022). <a href="https://doi.org/10.1126/science.abg3395" target="_blank" rel="noopener">doi:10.1126/science.abg3395</a>.</li>
+    <li>IceCube Collaboration, R. Abbasi et al. “Observation of high-energy neutrinos from the Galactic plane”. <i>Science</i> 380, 1338–1343 (2023). <a href="https://doi.org/10.1126/science.adc9818" target="_blank" rel="noopener">doi:10.1126/science.adc9818</a>.</li>
+   </ol>
+   <h3 style="font:25px Georgia,serif">El futuro: IceCube-Gen2, DUNE y JUNO</h3>
+   <ol>
+    <li>IceCube-Gen2 Collaboration. <i>IceCube-Gen2 Technical Design Report</i>, partes I–II (2023) y III (2024). <a href="https://icecube-gen2.wisc.edu/science/publications/tdr/" target="_blank" rel="noopener">Página oficial del TDR</a>.</li>
+    <li>F. G. Schroeder. “Science Potential and Technical Design of the IceCube-Gen2 Surface Array”. arXiv:2502.19950 (2025). <a href="https://arxiv.org/abs/2502.19950" target="_blank" rel="noopener">arXiv:2502.19950</a>. <strong>Nota:</strong> este registro corresponde al diseño del arreglo de superficie, no al TDR completo de IceCube-Gen2.</li>
+    <li>DUNE Collaboration. <i>Deep Underground Neutrino Experiment (DUNE), Far Detector Technical Design Report, Volume II: DUNE Physics</i>. arXiv:2002.03005. <a href="https://arxiv.org/abs/2002.03005" target="_blank" rel="noopener">arXiv:2002.03005</a>.</li>
+    <li>I. Esteban et al. “Lessons from the first JUNO results”. <i>Journal of High Energy Physics</i> (2026). <a href="https://doi.org/10.1007/JHEP04(2026)089" target="_blank" rel="noopener">doi:10.1007/JHEP04(2026)089</a>.</li>
+    <li>Real Academia de las Ciencias de Suecia. Premio Nobel de Física 2026, otorgado a Francis Halzen por sus contribuciones decisivas al observatorio IceCube y al descubrimiento de neutrinos astrofísicos de alta energía. <a href="https://www.nobelprize.org/prizes/physics/2026/press-release/" target="_blank" rel="noopener">Comunicado oficial del Nobel</a>; <a href="https://icecube.wisc.edu/news/awards/2026/10/francis-halzen-icecube-principal-investigator-wins-2026-physics-nobel-prize/" target="_blank" rel="noopener">noticia de IceCube</a>.</li>
+   </ol>
+   <p class="source-note">La bibliografía se presenta para divulgación y consulta. Antes de entregar, comprueba que el estilo de citación y los metadatos bibliográficos coincidan con las normas de tu curso. Las afirmaciones de actualidad deben fecharse; las propuestas experimentales se describen como proyectos y no como resultados ya obtenidos.</p>
+  </div>
+ </div>
+</section>
+
+</main>
+<footer class="footer">
+ <div class="wrap footer-grid">
+  <div><strong>CAZANDO FANTASMAS CÓSMICOS</strong><br>Una experiencia de divulgación sobre neutrinos.<br><span class="footer-authors">Aura Torregrosa Vanegas · David Vargas Forero</span></div>
+  <div>Proyecto académico · Partículas y cosmologías<br><a href="#referencias" style="color:#b7c7c9">Consultar bibliografía y fuentes</a></div>
+ </div>
+</footer>
+<script>
+const distance=document.getElementById('distance'), flavor=document.getElementById('flavor');
+function updateOsc(){
+ const x=Number(distance.value)/100, start=flavor.value;
+ // Reparto ilustrativo y normalizado: no es un cálculo físico de oscilación.
+ const swing=Math.sin(Math.PI*x/2)**2;
+ let p={e:0,m:0,t:0};
+ p[start]=1-swing;
+ const others=Object.keys(p).filter(k=>k!==start);
+ p[others[0]]=swing*.58;p[others[1]]=swing*.42;
+ const names={e:'Electrónico',m:'Muónico',t:'Tauónico'};
+ [['e','barE','valE'],['m','barM','valM'],['t','barT','valT']].forEach(([k,b,v])=>{
+  const n=Math.round(p[k]*100);document.getElementById(b).style.width=n+'%';document.getElementById(v).textContent=n+'%';
+ });
+ document.getElementById('distanceOut').textContent=distance.value+' unidades';
+ document.getElementById('simNote').textContent='Representación conceptual: parte como '+names[start].toLowerCase()+' y la composición de sabor cambia durante el recorrido.';
+}
+distance.addEventListener('input',updateOsc);flavor.addEventListener('change',updateOsc);updateOsc();
+
+const questions=[
+ {q:'¿Por qué es tan difícil detectar un neutrino?',a:['Porque tiene carga eléctrica muy alta.','Porque interactúa muy débilmente con la materia.','Porque viaja más lento que cualquier otra partícula.'],c:1,e:'Correcto: su baja probabilidad de interacción hace que atraviese grandes cantidades de materia sin dejar señal.'},
+ {q:'¿Cuántos sabores de neutrinos se conocen?',a:['Dos.','Tres.','Seis.'],c:1,e:'Así es: electrónico, muónico y tauónico.'},
+ {q:'¿Qué registra IceCube para estudiar neutrinos?',a:['La luz Cherenkov producida por partículas secundarias.','La sombra directa del neutrino.','Ondas de radio emitidas por el Sol.'],c:0,e:'Exacto: los sensores ópticos registran la luz Cherenkov generada en el hielo.'}
+];
+let qi=0,score=0,chosen=false;
+function renderQ(){
+ const q=questions[qi];chosen=false;document.getElementById('qCount').textContent=`PREGUNTA ${qi+1} DE ${questions.length}`;
+ document.getElementById('question').textContent=q.q;document.getElementById('feedback').textContent='';
+ document.getElementById('next').disabled=true;document.getElementById('next').textContent=qi===questions.length-1?'Ver resultado':'Siguiente pregunta →';
+ const box=document.getElementById('answers');box.innerHTML='';
+ q.a.forEach((answer,i)=>{const b=document.createElement('button');b.textContent=answer;b.addEventListener('click',()=>{
+  if(chosen)return;chosen=true;b.classList.add('selected');const ok=i===q.c;if(ok)score++;
+  document.getElementById('feedback').textContent=(ok?'✓ ':'✕ ')+q.e;document.getElementById('next').disabled=false;
+ });box.appendChild(b)});
+}
+document.getElementById('next').addEventListener('click',()=>{
+ if(qi<questions.length-1){qi++;renderQ()}else{
+  document.getElementById('qCount').textContent='RESULTADO';document.getElementById('question').textContent=`Obtuviste ${score} de ${questions.length} respuestas correctas.`;
+  document.getElementById('answers').innerHTML='';document.getElementById('feedback').textContent=score===3?'¡Excelente! Ya conoces varias claves de la cacería.':'¡Buen comienzo! Puedes recorrer de nuevo la página y volver a intentarlo.';
+  document.getElementById('next').textContent='Volver a empezar';document.getElementById('next').onclick=()=>{qi=0;score=0;document.getElementById('next').onclick=null;renderQ()};
+ }
+});renderQ();
+
+
+const flavorDescriptions={e:'Se relaciona con el electrón, el leptón cargado más ligero.',m:'Se relaciona con el muón, una partícula más pesada que el electrón.',t:'Se relaciona con el tau, el leptón cargado de mayor masa.'};
+document.querySelectorAll('.flavor-chip').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.flavor-chip').forEach(x=>x.classList.remove('active'));btn.classList.add('active');document.getElementById('flavorInfo').textContent=flavorDescriptions[btn.dataset.flavor]}));
+const detectorSteps=[['El encuentro improbable.','Un neutrino atraviesa el hielo y, en raras ocasiones, interactúa con un núcleo o una partícula del medio. Esa interacción puede producir una partícula cargada.'],['Un destello azul.','La partícula cargada puede viajar más rápido que la luz se propaga en el hielo. En ese caso emite radiación Cherenkov, un destello tenue de luz azul.'],['Una señal que cuenta una historia.','Los sensores ópticos registran cuándo y cuánta luz llega. Con esos datos, los investigadores reconstruyen el evento y estiman la dirección y energía del neutrino.']];
+document.querySelectorAll('.step').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.step').forEach(x=>x.classList.remove('active'));btn.classList.add('active');const d=detectorSteps[Number(btn.dataset.step)];document.getElementById('stepDetail').innerHTML='<strong>'+d[0]+'</strong><p>'+d[1]+'</p>'}));
+const progress=document.getElementById('navProgress');window.addEventListener('scroll',()=>{const max=document.documentElement.scrollHeight-window.innerHeight;progress.style.width=(max>0?window.scrollY/max*100:0)+'%'});
+const sectionLinks=[...document.querySelectorAll('.nav a')];const sectionObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){sectionLinks.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+entry.target.id))}}),{rootMargin:'-25% 0px -65% 0px'});document.querySelectorAll('main section[id]').forEach(section=>sectionObserver.observe(section));
+
+const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+</script>
+</body>
+</html>
